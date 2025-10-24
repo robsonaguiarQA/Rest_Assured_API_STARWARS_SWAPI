@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v3
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -20,5 +20,5 @@ jobs:
           distribution: 'temurin'
           java-version: '20'
 
-      - name: Run API Tests
-        run: mvn test
+      - name: Build with Maven
+        run: mvn clean install
