@@ -2,10 +2,8 @@ name: Run API Tests (Rest Assured)
 
 on:
   schedule:
-    # Toda sexta-feira às 12:00 (UTC-3 → 15:00 UTC)
+    # Toda sexta-feira às 12:00
     - cron: '0 15 * * 5'
-  workflow_dispatch: # Permite rodar manualmente
-
 jobs:
   test:
     runs-on: ubuntu-latest
