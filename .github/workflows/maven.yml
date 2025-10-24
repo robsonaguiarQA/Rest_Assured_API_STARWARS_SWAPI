@@ -2,13 +2,12 @@ name: Run API Tests (Rest Assured)
 
 on:
   schedule:
-    # Executa toda sexta-feira às 12:00 (UTC-3 → 15:00 UTC)
+    # Toda sexta-feira às 12:00 (UTC-3 → 15:00 UTC)
     - cron: '0 15 * * 5'
-  workflow_dispatch:
+  workflow_dispatch: # Permite rodar manualmente
 
 jobs:
   test:
-    name: Run Rest Assured Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -19,29 +18,6 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'temurin'
-
-      - name: Cache Maven packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Install dependencies
-        run: mvn install -DskipTests
 
       - name: Run API Tests
         run: mvn test
-
-      - name: Generate Test Report
-        if: always()
-        run: mvn surefire-report:report
-
-      - name: Upload Test Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-report
-          path: target/site/surefire-report.html
