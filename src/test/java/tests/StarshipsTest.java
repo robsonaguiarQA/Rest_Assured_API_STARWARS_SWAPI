@@ -3,54 +3,54 @@ package tests;
 import base.BaseTest;
 import endpoints.UserEndpoint;
 import org.junit.jupiter.api.Test;
-import utils.PlanetsFactory;
+import utils.StarshipsFactory;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
-public class PlanetsTest extends BaseTest {
+public class StarshipsTest extends BaseTest {
     @Test
-    public void listarTodosPlanetas() {
+    public void listarTodasNaves() {
         given()
                 .when()
-                .get(UserEndpoint.TODOS_PLANETAS)
+                .get(UserEndpoint.TODAS_NAVES)
                 .then()
                 .statusCode(200)
                 .log().all();
     }
 
     @Test
-    public void validaPrimeiroPlaneta() {
+    public void validarPrimeiraNave() {
         given()
                 .when()
-                .get(UserEndpoint.PRIMEIRO_PLANETA)
+                .get(UserEndpoint.PRIMEIRA_NAVE)
                 .then()
+                .body("name", equalTo("CR90 corvette"))
+                .body("model", equalTo("CR90 corvette"))
+                .body("url", containsString("starships/2"))
                 .statusCode(200)
-                .body("name", equalTo("Tatooine"))
-                .body("rotation_period", notNullValue())
-                .body("url", containsString("planets/1"))
                 .log().all();
     }
 
     @Test
-    public void validaUltimoPlaneta() {
+    public void validarUltimaNave() {
         given()
                 .when()
-                .get(UserEndpoint.ULTIMO_PLANETA)
+                .get(UserEndpoint.ULTIMA_NAVE)
                 .then()
+                .body("name", equalTo("Rebel transport"))
+                .body("model", equalTo("GR-75 medium transport"))
+                .body("url", containsString("starships/17"))
                 .statusCode(200)
-                .body("name", equalTo("Kamino"))
-                .body("rotation_period", notNullValue())
-                .body("url", containsString("planets/10"))
                 .log().all();
     }
 
     @Test
-    public void validaBodyCompletoUltimoPlaneta() {
-        String expectedBody = PlanetsFactory.getExpectedBody();
+    public void validarBodyCompletoUltimaNave() {
+        String expectedBody = StarshipsFactory.getExpectedBody();
         given()
                 .when()
-                .get(UserEndpoint.ULTIMO_PLANETA)
+                .get(UserEndpoint.ULTIMA_NAVE)
                 .then()
                 .statusCode(200)
                 .body("", equalTo(io.restassured.path.json.JsonPath.from(expectedBody).getMap("")))

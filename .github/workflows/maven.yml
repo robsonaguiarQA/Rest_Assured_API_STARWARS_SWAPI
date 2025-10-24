@@ -1,26 +1,47 @@
-name: "Template (nome de teste )"
+name: Run API Tests (Rest Assured)
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
   schedule:
-    - cron: "0 15 * * 3" # toda quarta às 15h
+    # Executa toda sexta-feira às 12:00 (UTC-3 → 15:00 UTC)
+    - cron: '0 15 * * 5'
+  workflow_dispatch:
 
 jobs:
   test:
+    name: Run Rest Assured Tests
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Install dependencies
+        run: mvn install -DskipTests
+
+      - name: Run API Tests
+        run: mvn test
+
+      - name: Generate Test Report
+        if: always()
+        run: mvn surefire-report:report
+
+      - name: Upload Test Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: target/site/surefire-report.html

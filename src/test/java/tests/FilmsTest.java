@@ -3,12 +3,14 @@ package tests;
 import base.BaseTest;
 import endpoints.UserEndpoint;
 import org.junit.jupiter.api.Test;
+import utils.FilmsFactory;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 public class FilmsTest extends BaseTest {
     @Test
-    public void listarTosdosFilmes(){
+    public void listarTosdosFilmes() {
         given()
                 .when()
                 .get(UserEndpoint.TODOS_FILMES)
@@ -18,7 +20,7 @@ public class FilmsTest extends BaseTest {
     }
 
     @Test
-    public void listarPrimeiroFilmes(){
+    public void validarPrimeiroFilme() {
         given()
                 .when()
                 .get(UserEndpoint.PRIMEIRO_FILME)
@@ -29,8 +31,9 @@ public class FilmsTest extends BaseTest {
                 .statusCode(200)
                 .log().all();
     }
+
     @Test
-    public void listarUltimoFilmes(){
+    public void validarUltimoFilme() {
         given()
                 .when()
                 .get(UserEndpoint.ULTIMO_FILME)
@@ -42,4 +45,15 @@ public class FilmsTest extends BaseTest {
                 .log().all();
     }
 
+    @Test
+    public void validarBodyCompletoUltimoFilme() {
+        String expectedBody = FilmsFactory.getExpectedBody();
+        given()
+                .when()
+                .get(UserEndpoint.ULTIMO_FILME)
+                .then()
+                .statusCode(200)
+                .body("", equalTo(io.restassured.path.json.JsonPath.from(expectedBody).getMap("")))
+                .log().all();
+    }
 }
