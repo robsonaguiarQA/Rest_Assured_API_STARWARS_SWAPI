@@ -6,7 +6,7 @@ Listagem de veículos
 
 Primeiro e último registro
 
-Validação completa de contrato (body esperado)
+Validação completa de contrato (body esperado) utilizando classe, factory, pra reaproveitar codigo e deixar o codigo clean 
 
 Teste de estresse leve, garantindo consistência em chamadas sequenciais
 
