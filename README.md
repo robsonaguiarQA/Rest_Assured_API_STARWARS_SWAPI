@@ -14,5 +14,3 @@ Usei boas práticas com Factory Pattern, validação de contrato, e organizaçã
 
 Foi um ótimo exercício de análise, lógica e padronização.
 💻 Tecnologias: Java, Rest Assured, JUnit/TestNG, Hamcrest, JSONPath
-
-🔗 [link do GitHub aqui]
